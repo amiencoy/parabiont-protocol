@@ -32,3 +32,7 @@ Use issues to discuss terminology, use cases, and proposed specification changes
 ## Licensing
 
 Licensing for the specification and future implementations remains to be selected. No standards-body endorsement or certification is implied.
+
+---
+
+<p align="center"><sub>Built with code, coffee, and a healthy dislike of repetitive work.</sub></p>
