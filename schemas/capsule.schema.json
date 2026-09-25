@@ -1,0 +1,100 @@
+{
+  "$defs": {
+    "StateItem": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9-]{1,64}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "fact",
+            "decision",
+            "task",
+            "constraint"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "topic": {
+          "pattern": "^[a-z0-9-]{1,64}$",
+          "title": "Topic",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "topic",
+        "text"
+      ],
+      "title": "StateItem",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "parabiont-context/v0.1",
+      "title": "Version",
+      "type": "string"
+    },
+    "bond_id": {
+      "pattern": "^[a-f0-9-]{36}$",
+      "title": "Bond Id",
+      "type": "string"
+    },
+    "audience": {
+      "pattern": "^[a-z0-9-]{1,64}$",
+      "title": "Audience",
+      "type": "string"
+    },
+    "purpose": {
+      "pattern": "^[a-z0-9-]{1,64}$",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "issued_at": {
+      "title": "Issued At",
+      "type": "integer"
+    },
+    "expires_at": {
+      "title": "Expires At",
+      "type": "integer"
+    },
+    "policy_digest": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Policy Digest",
+      "type": "string"
+    },
+    "state": {
+      "items": {
+        "$ref": "#/$defs/StateItem"
+      },
+      "maxItems": 500,
+      "minItems": 1,
+      "title": "State",
+      "type": "array"
+    }
+  },
+  "required": [
+    "version",
+    "bond_id",
+    "audience",
+    "purpose",
+    "issued_at",
+    "expires_at",
+    "policy_digest",
+    "state"
+  ],
+  "title": "Capsule",
+  "type": "object"
+}
