@@ -25,10 +25,11 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install --upgrade pip
-      - run: python -m pip install ./axionorm ./parabiont-protocol pytest pip-audit
+      - run: python -m pip install ./axionorm ./parabiont-protocol pytest pip-audit bandit
       - run: axionorm install-opa --directory axionorm/.runtime/opa
       - run: python -m pytest parabiont-protocol/tests -q
         env:
           AXIONORM_POLICY: axionorm/examples/technical-review.yaml
           OPA_BINARY: axionorm/.runtime/opa/opa
+      - run: python -m bandit -q -r parabiont-protocol/src
       - run: python -m pip_audit

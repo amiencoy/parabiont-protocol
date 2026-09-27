@@ -44,7 +44,7 @@ class Receiver(AgentExecutor):
 
 def build_app(engine, public_key, store, port=8787):
     card = AgentCard(name="Parabiont context receiver", description="Receives signed Axionorm-approved context for a local agent.",
-        url=f"http://127.0.0.1:{port}/", version="0.1.1", protocol_version="0.3.0",
+        url=f"http://127.0.0.1:{port}/", version="0.1.2", protocol_version="0.3.0",
         capabilities=AgentCapabilities(streaming=False, push_notifications=False, extensions=[AgentExtension(uri=EXTENSION, required=True,
             description="Signed, purpose-bound context carrier profile v0.1")]),
         default_input_modes=["application/json"], default_output_modes=["text/plain"],
