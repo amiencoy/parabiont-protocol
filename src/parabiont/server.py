@@ -5,9 +5,20 @@ from a2a.server.request_handlers import DefaultRequestHandler
 from a2a.server.tasks import InMemoryTaskStore
 from a2a.types import AgentCard, AgentCapabilities, AgentSkill, AgentExtension, DataPart
 from a2a.utils import new_agent_text_message
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import JSONResponse
 from .carrier import verify
 
 EXTENSION = "https://github.com/amiencoy/parabiont-protocol/context-carrier/v0.1"
+
+
+class LocalBoundaryMiddleware(BaseHTTPMiddleware):
+    """Reject browser-originated and non-loopback Host requests."""
+
+    async def dispatch(self, request, call_next):
+        if request.headers.get("origin") or request.url.hostname not in {"127.0.0.1", "localhost", "testserver"}:
+            return JSONResponse({"error": "local_boundary"}, status_code=403)
+        return await call_next(request)
 
 
 class Receiver(AgentExecutor):
@@ -33,7 +44,7 @@ class Receiver(AgentExecutor):
 
 def build_app(engine, public_key, store, port=8787):
     card = AgentCard(name="Parabiont context receiver", description="Receives signed Axionorm-approved context for a local agent.",
-        url=f"http://127.0.0.1:{port}/", version="0.1.0", protocol_version="0.3.0",
+        url=f"http://127.0.0.1:{port}/", version="0.1.1", protocol_version="0.3.0",
         capabilities=AgentCapabilities(streaming=False, push_notifications=False, extensions=[AgentExtension(uri=EXTENSION, required=True,
             description="Signed, purpose-bound context carrier profile v0.1")]),
         default_input_modes=["application/json"], default_output_modes=["text/plain"],
@@ -41,10 +52,5 @@ def build_app(engine, public_key, store, port=8787):
     app = A2AStarletteApplication(agent_card=card, http_handler=DefaultRequestHandler(
         agent_executor=Receiver(engine, public_key, store), task_store=InMemoryTaskStore()), max_content_length=1048576).build()
     # Local-only receiver. Host/Origin checks prevent browser-based DNS rebinding.
-    @app.middleware("http")
-    async def local_boundary(request, call_next):
-        from starlette.responses import JSONResponse
-        if request.headers.get("origin") or request.url.hostname not in {"127.0.0.1", "localhost", "testserver"}:
-            return JSONResponse({"error": "local_boundary"}, status_code=403)
-        return await call_next(request)
+    app.add_middleware(LocalBoundaryMiddleware)
     return app

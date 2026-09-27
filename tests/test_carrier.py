@@ -54,3 +54,4 @@ def test_real_a2a_dispatch(setup):
         replay = client.post("/", json=request)
         assert '"accepted": false' in replay.json()["result"]["parts"][0]["text"]
         assert client.post("/", json=request, headers={"origin": "https://example.com"}).status_code == 403
+        assert client.get("/.well-known/agent-card.json", headers={"host": "example.com"}).status_code == 403

@@ -4,7 +4,7 @@ An open-protocol initiative for persistent, governed agent attachment. Formerly 
 
 ## Status
 
-v0.1.0 adds an experimental **context-carrier profile** over an official A2A SDK transport. It includes Ed25519 signatures, purpose/audience binding, expiry, replay protection and local revocation. This is one profile within the wider attachment initiative, not a complete persistent-agent SDK.
+v0.1.1 provides an experimental **context-carrier profile** over an official A2A SDK transport. It includes Ed25519 signatures, purpose/audience binding, expiry, replay protection, local revocation, and refreshed security dependencies. This is one profile within the wider attachment initiative, not a complete persistent-agent SDK.
 
 ## Mechanism
 
@@ -21,7 +21,7 @@ The sender and receiver are A2A agents around the source/destination workflows. 
 Install [Axionorm](https://github.com/amiencoy/axionorm) first in the same Python 3.11+ environment, or use the [combined installer](https://github.com/amiencoy/paralax-mcp).
 
 ```bash
-git clone --branch v0.1.0 https://github.com/amiencoy/parabiont-protocol.git
+git clone --branch v0.1.1 https://github.com/amiencoy/parabiont-protocol.git
 cd parabiont-protocol
 python -m pip install .
 parabiont keygen .runtime/keys
