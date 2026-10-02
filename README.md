@@ -31,11 +31,11 @@ parabiont serve --policy ../axionorm/examples/technical-review.yaml --opa ../axi
 
 Another terminal: `parabiont send .runtime/envelope.json`. Discovery: `http://127.0.0.1:8787/.well-known/agent-card.json`. This loopback receiver never invokes a cloud provider. `parabiont revoke BOND_ID --store .runtime/state.sqlite` blocks future reads and re-delivery of that bond.
 
-Expiry/revocation cannot erase context already delivered to a model. Start a fresh model session after revocation. Keep keys, policies, reviews and state outside model-writable paths. Remote TLS/auth, distributed revocation, persistent A2A tasks and round-trip reconciliation remain future work.
+Expiry/revocation cannot erase context already delivered to a model. Start a fresh model session after revocation. Keep keys, policies, reviews and state outside model-writable paths. Remote TLS/auth, distributed revocation, persistent A2A tasks and authoritative round-trip reconciliation remain future work.
 
 ## Tests and schemas
 
-`parabiont schema` emits the capsule JSON Schema. Tests use a sibling Axionorm checkout; override through `AXIONORM_POLICY` and `OPA_BINARY`. Install pytest and run `python -m pytest tests -q`. The MCP repo includes an A2A HTTP to MCP stdio demo.
+`parabiont schema` emits the capsule JSON Schema. The package also owns the `parabiont-delta/v0.1` proposal schema consumed by PARALAX's quarantined return path; proposals are not authoritative state. Tests use a sibling Axionorm checkout; override through `AXIONORM_POLICY` and `OPA_BINARY`. Install pytest and run `python -m pytest tests -q`. The MCP repo includes an A2A HTTP to MCP stdio demo.
 
 ## Related projects and licensing
 

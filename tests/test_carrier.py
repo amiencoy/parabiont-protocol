@@ -1,5 +1,7 @@
 import copy
+import json
 import os
+from importlib.resources import files
 from pathlib import Path
 import pytest
 from starlette.testclient import TestClient
@@ -8,6 +10,12 @@ from axionorm.engine import digest
 from parabiont.carrier import pack, verify, keygen
 from parabiont.store import Store
 from parabiont.server import build_app
+
+
+def test_context_delta_schema_is_packaged():
+    schema = json.loads(files("parabiont").joinpath("schemas/context-delta.v0.1.json").read_text())
+    assert schema["properties"]["version"]["const"] == "parabiont-delta/v0.1"
+    assert schema["properties"]["status"]["const"] == "untrusted-proposal"
 
 
 @pytest.fixture
